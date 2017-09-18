@@ -13,15 +13,14 @@ using ThanhTran_Joomla.Common;
 namespace ThanhTran_Joomla.Test_Class
 {
     [TestClass]
-    public class Test : Common_Page
+    public class Test : Common_Test
 
     {
-        Common_Page commonPage = new Common_Page();
-        Common_Test commonTest = new Common_Test();
+        Common_Page commonPage= new Common_Page();
         Login_Page loginPage = new Login_Page();
-        Articles_Page articlePage = new Articles_Page();
         ArticlesNew_Page articleNewPage = new ArticlesNew_Page();
         ArticlesEdit_Page articleEditPage = new ArticlesEdit_Page();
+        ControlPanel_Page controlPanelPage = new ControlPanel_Page();
 
 
         string publishStatus = "Published";
@@ -48,28 +47,16 @@ namespace ThanhTran_Joomla.Test_Class
 
         }
 
-        [TestMethod]
-        public void JustTest1()
-        {
-            //var elem = driver.FindElement(By.ClassName("something"));
-            //((IJavaScriptExecutor)driver).ExecuteScript("arguments[0].scrollIntoView(true);", elem);
-            //((IJavaScriptExecutor)driver).ExecuteScript
-            Thread.Sleep(2500);
-            Console.WriteLine("abc 1: " + commonPage.randomTitle1);
-            Thread.Sleep(2500);
-            Console.WriteLine("abc 2: " + commonPage.randomTitle1);
+        //[TestMethod]
+        //public void DoNotRun3()
+        //{
 
-        }
-        [TestMethod]
-        public void JustTest2()
-        {
-            NavigateJoomla();
+        //    //commonPage.NavigateJoomla();
 
-            loginPage.Login(commonTest.username, commonTest.password);
+        //    //loginPage.Login(username, password);
 
-            commonPage.openArticlePage();
+        //    //controlPanelPage.hovering();
 
-            articlePage.DeleteAllArticle();
-        }
+        //}
     }
 }

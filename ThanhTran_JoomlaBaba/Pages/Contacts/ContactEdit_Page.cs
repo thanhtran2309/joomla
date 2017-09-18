@@ -5,10 +5,10 @@ using ThanhTran_Joomla.Common;
 
 namespace ThanhTran_Joomla.Pages
 {
-    class ArticlesEdit_Page : Common_Page
+    class ContactEdit_Page : Common_Page
     {
         #region Interface
-        By titleXpath = By.XPath("//input[@id='jform_title']");
+        By titleXpath = By.XPath("//input[@id='jform_name']");
         By categoryDropdownXpath = By.XPath("//div[@id='jform_catid_chzn']/a");
         By frameXpath = By.XPath("//iframe[@id='jform_articletext_ifr']");
         By statusXpath = By.XPath("//a[@class='chzn-single chzn-color-state']");
@@ -22,9 +22,9 @@ namespace ThanhTran_Joomla.Pages
         #endregion
 
         #region Method
-        public void EditArticle(string title, string status, string category, string content, string savetype, string featured, string language, string insertImage)
+        public void EditContact(string title, string status, string category, string savetype, string featured, string language, string insertImage)
         {
-            WaitForControl(frameXpath, longterm);
+            WaitForControl(categoryDropdownXpath, longterm);
 
             //Edit title
             if (title!="")
@@ -52,13 +52,6 @@ namespace ThanhTran_Joomla.Pages
                 driver.FindElement(statusXpath).Click();
                 driver.FindElement(By.XPath("//ul[@class='chzn-results']/li[text()='" + status + "']")).Click();
                 //div[@id='jform_catid_chzn']//ul[@class='chzn-results']/li[text()='- catagory 1']
-            }
-
-            //Input content
-            if (content != "")
-            {
-                driver.FindElement(frameXpath).Click();
-                driver.FindElement(frameXpath).SendKeys(content);
             }
 
             ////Insert image

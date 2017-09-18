@@ -1,12 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using OpenQA.Selenium;
-using OpenQA.Selenium.Firefox;
+﻿using OpenQA.Selenium;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using ThanhTran_Joomla.Common;
 
 
@@ -26,22 +19,25 @@ namespace ThanhTran_Joomla.Pages
         By createSuccessNotify = By.XPath("//div[@class='alert-message' and text()= 'Article successfully saved.']");
         By yesFeatureButton = By.XPath("//label[@class='btn' and contains(text(),'Yes')]");
         By noFeatureButton = By.XPath("//label[@class ='btn active btn-danger' and contains(text(),'No')]");
+        By imageButton = By.XPath("//button[@role='presentation']/span[text()='Image']");
+        By frameImageFather = By.XPath("//iframe[@src='https://qaservices1.joomla.com/administrator/index.php?option=com_media&view=images&tmpl=component&e_name=jform_articletext&asset=com_content&author=']");
+        By frameImageSon = By.XPath("//iframe[@id='imageframe']");
+        By insertButton = By.XPath("//button[text()='Insert' and @class='btn btn-success button-save-selected']");
+        string image = "//a[@class='img-preview' and @title='{0}']/..";
+
 
         #endregion
 
         #region Method
         public void CreateNewArticle(string title, string status, string category, string content, string savetype, string featured, string language, string insertImage)
         {
-            WaitForControl(frameXpath, 15000);
-            Console.WriteLine("Input title");
+            WaitForControl(frameXpath, longterm);
             //Enter title
             driver.FindElement(titleXpath).SendKeys(title);
 
             //Select feature
             if (featured == "Yes")
                 driver.FindElement(yesFeatureButton).Click();
-            else if (featured == "No")
-                driver.FindElement(noFeatureButton).Click();
 
             //Select category
             if (category != "")
@@ -61,11 +57,30 @@ namespace ThanhTran_Joomla.Pages
             //Input content
             if (content != "")
             {
-                Thread.Sleep(1500);
                 driver.FindElement(frameXpath).Click();
                 driver.FindElement(frameXpath).SendKeys(content);
             }
-       
+
+            //Insert image
+            if (insertImage != "")
+            {
+                driver.FindElement(imageButton).Click();
+                WaitForControl(frameImageFather, midterm);
+                driver.SwitchTo().Frame(driver.FindElement(frameImageFather));
+                WaitForControl(frameImageSon, midterm);
+                driver.SwitchTo().Frame(driver.FindElement(frameImageSon));
+
+                By imageControl = By.XPath(String.Format(image, insertImage));
+                WaitForControl(imageControl, midterm);
+                driver.FindElement(imageControl).Click();
+
+                driver.SwitchTo().DefaultContent();
+
+                driver.SwitchTo().Frame(driver.FindElement(frameImageFather));
+                driver.FindElement(insertButton).Click();
+                driver.SwitchTo().DefaultContent();
+            }
+
             //Click Save or Save&close or Save&New
             if (savetype == "Save")
                 driver.FindElement(saveButtonXpath).Click();
@@ -73,6 +88,7 @@ namespace ThanhTran_Joomla.Pages
                 driver.FindElement(saveAndCloseButtonXPath).Click();
             else if (savetype == "Save and New")
                 driver.FindElement(saveAndNewButtonXPath).Click();
+
 
         }
 

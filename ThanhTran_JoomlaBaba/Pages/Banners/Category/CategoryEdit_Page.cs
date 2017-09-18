@@ -3,12 +3,12 @@ using ThanhTran_Joomla.Common;
 
 
 
-namespace ThanhTran_Joomla.Pages
+namespace ThanhTran_Joomla.Pages.Banners
 {
-    class ArticlesEdit_Page : Common_Page
+    class CategoryEdit_Page : Common_Page
     {
         #region Interface
-        By titleXpath = By.XPath("//input[@id='jform_title']");
+        By titleXpath = By.XPath("//input[@id='jform_name']");
         By categoryDropdownXpath = By.XPath("//div[@id='jform_catid_chzn']/a");
         By frameXpath = By.XPath("//iframe[@id='jform_articletext_ifr']");
         By statusXpath = By.XPath("//a[@class='chzn-single chzn-color-state']");
@@ -18,32 +18,20 @@ namespace ThanhTran_Joomla.Pages
         By cancelButtonXpath = By.XPath("//div[@id='toolbar-cancel']/button");
         By yesFeatureButton = By.XPath("//label[@class='btn' and contains(text(),'Yes')]");
         By noFeatureButton = By.XPath("//label[@class ='btn active btn-danger' and contains(text(),'No')]");
-
+        By contactNameTextField = By.XPath("//input[@id='jform_contact']");
+        By emailTextField = By.XPath("//input[@id='jform_email']");
         #endregion
 
-        #region Method
-        public void EditArticle(string title, string status, string category, string content, string savetype, string featured, string language, string insertImage)
+        #region Method      
+        public void EditCategory(string title, string status, string savetype, string name, string email)
         {
-            WaitForControl(frameXpath, longterm);
+            WaitForControl(statusXpath, longterm);
 
             //Edit title
             if (title!="")
             {
                 driver.FindElement(titleXpath).Clear();
                 driver.FindElement(titleXpath).SendKeys(title);
-            }
-
-            //Select feature
-            if (featured == "Yes")
-                driver.FindElement(yesFeatureButton).Click();
-            if (featured == "No")
-                driver.FindElement(noFeatureButton).Click();
-
-            //Select category
-            if (category != "")
-            {
-                driver.FindElement(categoryDropdownXpath).Click();
-                driver.FindElement(By.XPath("//div[@id='jform_catid_chzn']//li[contains(text(),'" + category + "')]")).Click();
             }
 
             //Select status
@@ -54,26 +42,19 @@ namespace ThanhTran_Joomla.Pages
                 //div[@id='jform_catid_chzn']//ul[@class='chzn-results']/li[text()='- catagory 1']
             }
 
-            //Input content
-            if (content != "")
+            //Edit name
+            if (name != "")
             {
-                driver.FindElement(frameXpath).Click();
-                driver.FindElement(frameXpath).SendKeys(content);
+                driver.FindElement(contactNameTextField).Clear();
+                driver.FindElement(contactNameTextField).SendKeys(name);
             }
 
-            ////Insert image
-            //if (insertImage != "")
-            //{
-            //    driver.FindElement(imageButton).Click();
-            //    WaitForControl(frameImage, longterm);
-            //    driver.SwitchTo().Frame(driver.FindElement(frameImage));
-            //    By imageControl = By.XPath(String.Format(image, insertImage));
-            //    WaitForControl(imageControl, longterm);
-            //    driver.FindElement(imageControl).Click();
-            //    driver.FindElement(insertButton).Click();
-            //    driver.SwitchTo().DefaultContent();
-            //}
-
+            //Edit email
+            if (email != "")
+            {
+                driver.FindElement(emailTextField).Clear();
+                driver.FindElement(emailTextField).SendKeys(email);
+            }
             //Click Save or Save&close or Save&New
             if (savetype == "Save")
                 driver.FindElement(saveButtonXpath).Click();
